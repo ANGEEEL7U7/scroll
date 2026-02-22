@@ -16,7 +16,7 @@ export class AppComponent implements OnInit,AfterViewInit {
 
   filtros: { [key: string]: string} = {};
   tabla = TABLA_CASETA;
-  estructuraTabla = this.tabla;
+  estructuraTabla = [...this.tabla];
   listaDatos = new MatTableDataSource<ReporteCaseta>([]);
 
   selectorColumnas = new FormControl(CABECERAS)
@@ -41,19 +41,32 @@ export class AppComponent implements OnInit,AfterViewInit {
     };
   }
 
-  filtrar(filtro: any,indice: any): void {
+  buscador(filtro: any,indice: any): void {
     this.filtros[indice] = (filtro.target.value as string).trim().toLowerCase()
-    this.listaDatos.filter = JSON.stringify(this.filtros);
-    this.listaDatos.paginator?.firstPage();
+    this._aplicarFiltro();
+    
   }
 
   limpiarFiltros(): void {
-    Object.keys(this.filtros).forEach(indice => this.filtros[indice] = '')
-    this.listaDatos.filter = JSON.stringify(this.filtros);
+    this.filtros = {};
+    this._aplicarFiltro();
   }
 
   seleccionarColumna(): void {
     const columnas = this.selectorColumnas.value as string[];
-    this.estructuraTabla = this.tabla.filter(i => i.visible === columnas.includes(i.indice));
+    this.estructuraTabla = this.tabla.filter((i) => {
+      const visible = i.visible === columnas.includes(i.indice)
+      if(!visible) { delete this.filtros[i.indice]; }
+      return visible;
+    });
+    this._aplicarFiltro();
+  }
+
+  private _aplicarFiltro(): void {
+    const datos = this.listaDatos
+    datos.filter = JSON.stringify(this.filtros);
+    if(datos.paginator) {
+      datos.paginator.firstPage();
+    }
   }
 }

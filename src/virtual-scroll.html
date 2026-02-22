@@ -62,8 +62,8 @@
         <input
           type="text"
           class="border w-full rounded border-gray-500"
-          [value]="filtros[columna.indice] || ''"
-          (keyup)="filtrar($event, columna.indice)"
+          [(ngModel)]="filtros[columna.indice]"
+          (keyup)="buscador($event, columna.indice)"
         />
       </div>
     </div>

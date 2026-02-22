@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OverlayModule } from "@angular/cdk/overlay";
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -30,6 +30,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     OverlayModule,
     ScrollingModule,
     MatPaginatorModule,
+    FormsModule,
 ],
   providers: [],
   bootstrap: [AppComponent],
