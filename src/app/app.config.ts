@@ -1,4 +1,6 @@
-export const TABLA_CASETA = [
+import { Tabla } from "./app.types";
+
+export const TABLA_CASETA: Tabla[] = [
   {nombre: 'Sucursal',indice: 'cedis',visible: true,tipo: 'number',class: '',ancho:'200px'},
   {nombre: 'Viaje',indice: 'viaje',visible: true,tipo: 'number',class: '',ancho:'200px'},
   {nombre: 'Estado del viaje',indice: 'estado',visible: true,tipo: 'number',class: '',ancho:'200px'},

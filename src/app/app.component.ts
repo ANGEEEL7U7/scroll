@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AppService } from './app.service';
-import { ReporteCaseta } from './app.types';
+import { Filtro, ReporteCaseta } from './app.types';
 import { CABECERAS, TABLA_CASETA } from './app.config';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,7 +14,7 @@ import { MatPaginator } from '@angular/material/paginator';
 export class AppComponent implements OnInit,AfterViewInit {
   @ViewChild(MatPaginator) paginacion!: MatPaginator;
 
-  filtros: { [key: string]: string} = {};
+  filtros: Filtro = {};
   tabla = TABLA_CASETA;
   estructuraTabla = [...this.tabla];
   listaDatos = new MatTableDataSource<ReporteCaseta>([]);
@@ -31,8 +31,8 @@ export class AppComponent implements OnInit,AfterViewInit {
     this._service.obtenerDatos()
       .subscribe(lista => this.listaDatos.data = lista);
 
-    this.listaDatos.filterPredicate = (data,filter): boolean => {
-      const filtros = JSON.parse(filter);
+    this.listaDatos.filterPredicate = (data: ReporteCaseta,filter: string): boolean => {
+      const filtros = JSON.parse(filter) as Filtro;
       return Object.keys(filtros).every((columna) => {
         const valor = data[columna]? data[columna].toString().toLowerCase() : '';
         return valor.includes(filtros[columna]);
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit,AfterViewInit {
   }
 
   buscador(filtro: any,indice: any): void {
-    this.filtros[indice] = (filtro.target.value as string).trim().toLowerCase()
+    this.filtros[indice] = String(filtro.target.value).trim().toLowerCase()
     this._aplicarFiltro();
     
   }

@@ -1,3 +1,16 @@
+export interface Filtro {
+  [key: string]: string;
+}
+
+export interface Tabla {
+  nombre: string;
+  indice: string,
+  visible: boolean;
+  tipo?: string;
+  class?: string;
+  ancho?: string;
+}
+
 export interface ReporteCaseta {
   [key: string]: any;
   cedis: string;
