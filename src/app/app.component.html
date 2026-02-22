@@ -1,0 +1,83 @@
+<div class="h-screen w-full flex flex-col overflow-hidden">
+    <!--cabecera del modulo-->
+    <div class="flex p-5 justify-between shrink-0">
+        <div class="flex flex-col">
+            <span class="text-4xl font-semibold">Surtido de caseta</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+            <button mat-flat-button color="primary">Exportar</button>
+            <span
+                class="border rounded-full bg-gray-300 border-gray-500 px-3 py-1 flex items-center">
+                01/02/2026 - 01-02-2026
+            </span>
+            <button mat-stroked-button class="border w-[150px] rounded-full">
+                <mat-select #selector multiple>
+                    <mat-option
+                        *ngFor="let food of ['waad', 'ticimul', 'vibroblock']"
+                        [value]="food">{{ food }}</mat-option>
+                </mat-select>
+            </button>
+        </div>
+    </div>
+    <!--cabecera del modulo-->
+
+    <!--tabla-->
+    <div class="flex-1 overflow-auto">
+        <!--cabecera-->
+        <div class="z-100 sticky items-center top-0 bg-blue-600 min-w-max grid grid-flow-col-dense gap-2 px-3 border-y border-gray-600 shadow-lg">
+            <div class="w-[50px] flex flex-col">
+                <button mat-icon-button (click)="columnas.open()">
+                    <mat-icon>table_rows</mat-icon>
+                </button>
+                <button mat-icon-button (click)="limpiarFiltros()">
+                    <mat-icon>filter_alt_off</mat-icon>
+                </button>
+                <mat-select
+                    #columnas
+                    [formControl]="selectorColumnas"
+                    multiple
+                    class="invisible w-0 h-0 top-0">
+                    <mat-option
+                        *ngFor="let food of tabla"
+                        [value]="food.indice"
+                        (click)="seleccionarColumna()">{{ food.nombre }}</mat-option>
+                </mat-select>
+            </div>
+            <!--columnas-->
+            <div
+                class="text-center col-span-1"
+                *ngFor="let columna of estructuraTabla"
+                [style.width]="columna.ancho || '200px'">
+                <span>{{ columna.nombre }}</span>
+                <input
+                type="text"
+                class="border w-full rounded border-gray-500"
+                [value]="filtros[columna.indice] || ''"
+                (keyup)="filtrar($event, columna.indice)"/>
+            </div>
+            <!--columnas-->
+        </div>
+        <!--cabecera-->
+
+        <!--datos-->
+        <div
+            *ngFor="let datos of listaDatos.connect() | async"
+            class="grid grid-flow-col-dense gap-2 px-3 min-w-max py-2 border-b">
+            <div class="w-[50px] col-span-1"></div>
+
+            <span
+                class="col-span-1"
+                [style.width]="columna.ancho"
+                *ngFor="let columna of estructuraTabla"
+                [ngClass]="columna.class || 'text-center'">
+                {{ datos[columna.indice] }}
+            </span>
+        </div>
+        <!--datos-->
+    </div>
+    <mat-paginator
+        [pageSizeOptions]="[50, 100, 150]"
+        showFirstLastButtons
+        aria-label="Select page"></mat-paginator>
+    <!--tabla-->
+</div>
